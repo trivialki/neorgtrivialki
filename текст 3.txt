@@ -1,0 +1,54 @@
+Айдар Рифович, [20 ноя. 2026 в 19:04]
+sin(rad(d))],d,s,parent)}
+function place(k,pos,theta,s,parent){
+if(P[k])return;var a=A[k];
+if(a.ring>=0&&!RP[a.ring]){ringAt(a.ring,k,pos,theta,parent);return}
+P[k]=pos;
+var ch=a.nb.filter(function(e){return e.to!=parent&&!P[e.to]});if(!ch.length)return;
+ch.sort(function(x,y){return sub(y.to,k)-sub(x.to,k)});
+var sp=a.nb.some(function(e){return e.o==3})||a.nb.filter(function(e){return e.o==2}).length>1,n=ch.length,o=[];
+if(parent<0)o=n==1?[[-30,-1]]:ch.map(function(_,q){return[q360/n,1]});
+else if(sp)o=[[theta,-s]];
+else if(n==1)o=[[theta+s60,s]];
+else if(n==2)o=[[theta+s60,s],[theta-s60,-s]];
+else o=[[theta+90,1],[theta,0],[theta-90,-1]];
+ch.forEach(function(e,q){var x=o[q]||o[o.length-1];go(e.to,pos,x[0],-x[1]||1,k)});
+}
+function ringAt(ri,entry,pos,theta,parent){
+RP[ri]=1;var R=rings[ri],n=R.length,r=L/(2Math.sin(Math.PI/n)),e=R.indexOf(entry),t0=rad(parent<0?0:theta),cx=pos[0]+rMath.cos(t0),cy=pos[1]+rMath.sin(t0);RC[ri]=[cx,cy];
+for(var j=0;j<n;j++){var v=R[(e+j)%n],g=t0+Math.PI+j2Math.PI/n;P[v]=[cx+rMath.cos(g),cy+rMath.sin(g)];RA[v]=g180/Math.PI}
+for(var j=0;j<n;j++){var v=R[(e+j)%n],sb=A[v].nb.filter(function(x){return A[x.to].ring!=ri&&!P[x.to]&&x.to!=parent});
+sb.forEach(function(x,q){go(x.to,P[v],RA[v]+(sb.length>1?(q?18:-18):0),1,v)})}
+}
+place(0,[0,0],0,1,-1);
+function lbl(k){var a=A[k];if(a.ps)return a.el;if(a.el=='C'&&a.ring>=0)return'';return a.el+(a.h>0?'H'+(a.h>1?a.h:''):'')}
+function rev(k){var a=A[k];if(a.nb.length!=1||!lbl(k))return false;var q=P[a.nb[0].to];return P[k][0]<q[0]-3}
+function txt(k){var a=A[k],t=lbl(k);if(rev(k)&&!a.ps&&a.h>0)t='H'+(a.h>1?a.h:'')+a.el;return t}
+var mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
+P.forEach(function(p){mnx=Math.min(mnx,p[0]);mxx=Math.max(mxx,p[0]);mny=Math.min(mny,p[1]);mxy=Math.max(mxy,p[1])});
+var pad=26,W=mxx-mnx+2pad,H=mxy-mny+2pad,ox=pad-mnx,oy=pad-mny,o='';
+function X(p){return[p[0]+ox,p[1]+oy]}
+function shr(k,dx,dy){var l=lbl(k);if(!l)return 0;var n=A[k].nb.length>1?(l.replace(/\d/g,'').length-1):0;return 9+Math.abs(dx)3.5n}
+var done={};
+A.forEach(function(a,k){a.nb.forEach(function(e){var m=e.to,key=Math.min(k,m)+'-'+Math.max(k,m);if(done[key])return;done[key]=1;
+var p=X(P[k]),q=X(P[m]),dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
+var s1=shr(k,ux,uy),s2=shr(m,ux,uy),x1=p[0]+uxs1,y1=p[1]+uys1,x2=q[0]-uxs2,y2=q[1]-uys2;
+function ln(a,b,c,d){o+='<line x1="'+a.toFixed(1)+'" y1="'+b.toFixed(1)+'" x2="'+c.toFixed(1)+'" y2="'+d.toFixed(1)+'"/>'}
+var inr=a.ring>=0&&A[m].ring==a.ring&&rings[a.ring].length>=5;
+if(e.o==1)ln(x1,y1,x2,y2);
+else if(e.o==3){ln(x1,y1,x2,y2);ln(x1+nx4,y1+ny4,x2+nx4,y2+ny4);ln(x1-nx4,y1-ny4,x2-nx4,y2-ny4)}
+else if(inr){var c=RC[a.ring],my=(p[1]+q[1])/2,cc=X(c),sg=((cc[0]-(p[0]+q[0])/2)nx+(cc[1]-my)ny)>0?1:-1;ln(x1,y1,x2,y2);ln(x1+nxsg5+ux5,y1+nysg5+uy5,x2+nxsg5-ux5,y2+nysg5-uy5)}
+else{ln(x1+nx3,y1+ny3,x2+nx3,y2+ny3);ln(x1-nx3,y1-ny3,x2-nx3,y2-ny3)}})});
+var T='';
+A.forEach(function(a,k){var t=txt(k);if(!t)return;var p=X(P[k]),r=rev(k),deg=a.nb.length,an=deg>1?'middle':(r?'end':'start'),x=p[0]+(deg>1?0:(r?7:-7));
+T+='<text x="'+x.toFixed(1)+'" y="'+(p[1]+5).toFixed(1)+'" text-anchor="'+an+'">'+t.replace(/(\d+)/g,'<tspan baseline-shift="sub" font-size="10">$1</tspan>')+'</text>'});
+return '<svg viewBox="0 0 '+W.toFixed(0)+' '+H.toFixed(0)+'" style="width:100%;max-width:'+Math.min(W*1.5,330).toFixed(0)+'px;height:auto" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="Структурная формула">'+o+'<g fill="currentColor" stroke="none" font-family="system-ui,sans-serif" font-size="15" font-weight="600">'+T+'</g></svg>';
+}
+/* ===== Колода: карточки, тест, список ===== /
+var TOK=0,CUR=null,DKTOK=0;
+function mountDeck(R,cfg,tok){
+var mytok=++DKTOK;
+var KEY='ege-deck-'+cfg.key,S={stars:[],best:{},miss:{},cat:'all',mode:'cards',side:'q'};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function fm(t){return t.replace(/_{([^}])}/g,'$1').

@@ -1,0 +1,23 @@
+Айдар Рифович, [20 ноя. 2026 в 19:04]
+const RAW=o|Негашёная известь|CaO|оксид кальция o|Жжёная магнезия|MgO|оксид магния o|Железная окалина|Fe3O4|оксид железа(II, III) o|Красный железняк|Fe2O3|оксид железа(III) o|Корунд|Al2O3|оксид алюминия o|Пиролюзит|MnO2|оксид марганца(IV) o|Вода, лёд|H2O|оксид водорода o|Угарный газ|CO|оксид углерода(II) o|Углекислый газ, сухой лёд|CO2|оксид углерода(IV) o|Закись азота, веселящий газ|N2O|оксид азота(I) o|Бурый газ, лисий хвост|NO2|оксид азота(IV) o|Сернистый газ, сернистый ангидрид|SO2|оксид серы(IV) o|Серный газ, серный ангидрид|SO3|оксид серы(VI) o|Кварц, кремнезём, песок|SiO2|оксид кремния h|Нашатырный спирт|NH3·H2O|гидроксид аммония (NH4OH), водный раствор аммиака h|Едкий натр, каустик, каустическая сода|NaOH|гидроксид натрия h|Едкое кали|KOH|гидроксид калия h|Гашёная известь, известковое молоко|Ca(OH)2|гидроксид кальция a|Соляная кислота|HCl|хлороводородная кислота a|Плавиковая кислота|HF|фтороводородная кислота a|Синильная кислота, цианистоводородная|HCN|циановодородная кислота a|Царская водка|HNO3 + HCl (1:3)|смесь концентрированных растворов HNO3 и HCl в объёмном соотношении 1:3 s|Поваренная соль, пищевая соль, галит|NaCl|хлорид натрия s|Мел, мрамор, известняк|CaCO3|карбонат кальция s|Пищевая (питьевая) сода|NaHCO3|гидрокарбонат натрия s|Кальцинированная сода|Na2CO3|карбонат натрия s|Поташ|K2CO3|карбонат калия s|Натриевая селитра|NaNO3|нитрат натрия s|Калийная селитра|KNO3|нитрат калия s|Аммиачная селитра|NH4NO3|нитрат аммония s|Нашатырь|NH4Cl|хлорид аммония s|Марганцовка|KMnO4|перманганат калия s|Хромпик|K2Cr2O7|дихромат калия s|Флюорит|CaF2|фторид кальция s|Бертолетова соль|KClO3|хлорат калия s|Малахит|(CuOH)2CO3|дигидроксокарбонат меди s|Криолит|Na3AlF6|гексафтороалюминат натрия s|Красная кровяная соль|K3[Fe(CN)6]|гексацианоферрат(III) калия s|Жёлтая кровяная соль|K4[Fe(CN)6]|гексацианоферрат(II) калия x|Киноварь|HgS|сульфид ртути x|Пирит|FeS2|дисульфид железа(II) x|Карборунд|SiC|карбид кремния x|Аммиачная вода|NH3 (р-р)|насыщенный водный раствор аммиака (NH3) x|Баритовая вода|Ba(OH)2 (р-р)|насыщенный водный раствор Ba(OH)2 x|Бромная вода|Br2 (р-р)|водный раствор Br2 x|Известковая вода|Ca(OH)2 (р-р)|насыщенный водный раствор Ca(OH)2 k|Медный купорос|CuSO4·5H2O|пентагидрат сульфата меди k|Железный купорос|FeSO4·7H2O|гептагидрат сульфата железа k|Цинковый купорос|ZnSO4·7H2O|гептагидрат сульфата цинка k|Гипс|CaSO4·2H2O|дигидрат сульфата кальция k|Глауберова соль|Na2SO4·10H2O|декагидрат сульфата натрия k|Кристаллическая сода|Na2CO3·10H2O|декагидрат карбоната натрия;
+const D=RAW.split('\n').map(l=>{const[c,n,f,s]=l.split('|');return{c,n,f,s}});
+const fm=f=>f.replace(/(?<=[A-Za-z)]])(\d+)/g,'$1');
+const sh=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const KEY='ege-trivial-v1';
+let S={stars:[],best:{},miss:{},cat:'all',mode:'cards',side:'n'};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let cat=CATS[S.cat]?S.cat:'all',mode=['cards','quiz','list'].includes(S.mode)?S.mode:'cards';
+const pool=()=>cat=='all'?D:D.filter(x=>x.c==cat);
+const col=c=>CATS[c][1];
+const $=id=>document.getElementById(id);
+function chrome(){
+('cats').innerHTML=Object.keys(CATS).map(k=>`<button class="chip" aria-pressed="{k==cat}" data-k="{k}">{CATS[k][0]}</button>).join(''); ('modes').innerHTML=[['cards','Карточки'],['quiz','Тест'],['list','Список']].map(([k,t])=>`<button role="tab" aria-selected="{k==mode}" data-m="{k}">{t}</button>).join('');
+}
+$('cats').onclick=e=>{const k=e.target.dataset.k;if(k){cat=k;go()}};
+$('modes').onclick=e=>{const k=e.target.dataset.m;if(k){mode=k;go()}};
+function go(){S.cat=cat;S.mode=mode;S.side=side;save();chrome();({cards:cards,quiz:quiz,list:list})mode}
+let dk=[],ix=0,side=S.side||'n',stars=new Set(S.stars),onlyStar=false;
+function cards(){dk=pool();ix=0;drawC()}
+function drawC(){
+const A=$('app'),d=onlyStar?dk.filter(x=>stars.has(x.n)):dk;

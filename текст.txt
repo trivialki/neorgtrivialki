@@ -1,0 +1,41 @@
+Айдар Рифович, [20 ноя. 2026 в 19:04]
+:root{--bg:#EDF2EE;--ink:#14302A;--mut:#5B7168;--pan:#fff;--ln:#CFDBD3;--ok:#2E7D4F;--bad:#B8402F;--sul:#E8B400;
+--o:#3E6FB0;--h:#2E8B6A;--a:#A8650A;--s:#8A5AA8;--x:#B5483A;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1B1A;--ink:#E6F0EA;--mut:#93ABA0;--pan:#17282A;--ln:#2A4040;--ok:#5CC389;--bad:#F08B79;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F1B1A;--ink:#E6F0EA;--mut:#93ABA0;--pan:#17282A;--ln:#2A4040;--ok:#5CC389;--bad:#F08B79;color-scheme:dark}
+{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:22px;font-weight:800;margin:4px 0 2px}.sub{color:var(--mut);margin:0 0 14px;font-size:14px}
+.row{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--sul);outline-offset:2px}
+.chip{flex:none;border:1.5px solid var(--ln);background:var(--pan);border-radius:20px;padding:6px 14px;font-weight:600}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.modes{display:flex;margin:10px 0 16px;border-bottom:2px solid var(--ln)}
+.modes button{flex:1;background:none;border:0;padding:10px;font-weight:600;color:var(--mut);border-bottom:3px solid transparent;margin-bottom:-2px}
+.modes button[aria-selected=true]{color:var(--ink);border-color:var(--sul)}
+.bar{height:6px;background:var(--ln);border-radius:3px;overflow:hidden;margin-bottom:12px}.bar i{display:block;height:100%;background:var(--sul);transition:width .4s}
+.scene{perspective:900px;height:260px;margin-bottom:14px}
+.card{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.3,.8,.3,1);transform-style:preserve-3d;cursor:pointer;animation:in .35s ease-out}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+.front{background:var(--c);color:#fff}.front b{font-size:28px;line-height:1.2;font-weight:800}.front small{position:absolute;top:14px;opacity:.85;font-size:13px}.front em{position:absolute;bottom:14px;font-size:13px;opacity:.8;font-style:normal}
+.back{background:var(--pan);border:2px solid var(--c);transform:rotateY(180deg)}
+.fm{font-size:38px;font-weight:800;color:var(--ink)}.sys{color:var(--mut);margin-top:8px}
+sub{font-size:.6em}
+@keyframes in{from{opacity:0;transform:translateX(24px)}}
+.btns{display:flex;gap:10px}.btns button{flex:1;padding:13px;border-radius:12px;border:2px solid var(--ink);background:var(--pan);font-weight:600}
+.btns .go{background:var(--ink);color:var(--bg)}
+.q{background:var(--pan);border-radius:16px;padding:20px;text-align:center;margin-bottom:12px;border-left:6px solid var(--c)}
+.q small{color:var(--mut)}.q b{display:block;font-size:24px;margin-top:4px}
+.opt{display:block;width:100%;text-align:left;margin-bottom:8px;padding:13px 16px;border-radius:12px;border:2px solid var(--ln);background:var(--pan);font-size:18px;font-weight:600}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--pan))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--pan));animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.stat{display:flex;justify-content:space-between;color:var(--mut);font-size:14px;margin-bottom:10px}
+.fb{min-height:26px;margin:4px 0 10px;color:var(--mut)}
+.li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 0 10px 12px;border-bottom:1px solid var(--ln);border-left:5px solid var(--c)}
+.li b{font-weight:600}.li span{font-weight:800}.li small{grid-column:1/-1;color:var(--mut)}
+.

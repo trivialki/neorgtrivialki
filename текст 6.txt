@@ -1,0 +1,38 @@
+Айдар Рифович, [20 ноя. 2026 в 19:04]
+var lens=[10,20].filter(function(x){return x<n}).concat([n]);
+$('app').innerHTML='<div class="q" style="--c:'+col(cat)+'"><small>Тест по группе</small><b>'+C[cat][0]+'</b></div>'+(b?'<p class="sub" style="text-align:center">Лучший результат: '+b.sc+' из '+b.n+' ('+b.pct+'%)</p>':'')+'<p class="sub" style="text-align:center">Сколько вопросов?</p><div class="btns" id="ln">'+lens.map(function(x){return '<button class="go" data-n="'+x+'">'+(x==n?'Все '+n:x)+'</button>'}).join('')+'</div>'+(ms.length?'<div class="btns" style="margin-top:10px"><button id="ms">Работа над ошибками ('+ms.length+')</button></div>':'')+'<div class="tools"><button id="rs">Сбросить прогресс</button></div>';
+$('ln').onclick=function(e){var k=+e.target.dataset.n;if(k)startT(sh(p).slice(0,k),false)};
+if(ms.length)$('ms').onclick=function(){startT(sh(ms),true)};
+$('rs').onclick=function(e){if(e.target.dataset.sure){S.stars=[];S.best={};S.miss={};save();quiz()}else{e.target.dataset.sure=1;e.target.textContent='Нажми ещё раз, чтобы удалить всё'}};
+}
+function startT(items,mist){T={items:items,i:0,sc:0,bad:[],mist:mist};nextQ()}
+function nextQ(){
+if(T.i>=T.items.length)return result();
+var it=T.items[T.i],len=T.items.length;
+var rev=isR(it.c)&&D.filter(function(x){return x.a==it.a}).length==1&&Math.random()<(cfg.rev?.4:.5);
+var nq=!rev&&isQ(it.c)&&Math.random()<.5;
+var Q=rev?it.a:(nq?hd(it):it.q),ans=(rev||nq)?it.q:it.a;
+function src(x){return (rev||nq)?x.q:x.a}
+var same=D.filter(function(x){return x.c==it.c&&src(x)!=ans}),other=D.filter(function(x){return x.c!=it.c&&src(x)!=ans});
+var seen={},opts=[ans];seen[ans]=1;
+sh(same).concat(sh(other)).forEach(function(x){if(opts.length<4&&!seen[src(x)]){seen[src(x)]=1;opts.push(src(x))}});
+var sm=cfg.sim?simOpts(it,rev):nq?(it.c=='h'?hyd(it):null):(cfg.gen&&cfg.revc&&cfg.revc.indexOf(it.c)>-1)?smart(it,rev):null;opts=sm||sh(opts);
+var lq=cfg.ql&&cfg.ql[it.c],lab=Array.isArray(lq)?lq[(rev||nq)?1:0]:(lq||cfg.qlab[rev?1:0]);
+$('app').innerHTML='<div class="stat"><span>Вопрос '+(T.i+1)+' из '+len+'</span><span>Верно: '+T.sc+'</span></div><div class="bar"><i style="width:'+T.i/len*100+'%"></i></div><div class="q" style="--c:'+col(it.c)+'"><small>'+lab+'</small><b>'+fm(Q)+'</b>'+(cfg.draw&&it.m?'<div class="mol">'+drawMol(it.m)+'</div>':'')+'</div><div id="os">'+opts.map(function(x,i){return '<button class="opt" data-i="'+i+'">'+fm(x)+'</button>'}).join('')+'</div><div class="fb" id="fb" aria-live="polite"></div><div class="btns" id="nx"></div>';
+$('os').onclick=function(e){
+var b=e.target.closest('.opt');if(!b||$('nx').innerHTML)return;
+var right=opts[b.dataset.i]==ans;
+if(right){T.sc++;delete S.miss[it.id]}else{T.bad.push(it);S.miss[it.id]=1}
+save();
+R.querySelectorAll('.opt').forEach(function(el,i){if(opts[i]==ans)el.classList.add('ok');else if(el==b)el.classList.add('bad')});
+$('fb').innerHTML=(right?'Верно! ':'Неверно. ')+fm(it.q)+': '+fm(it.a)+(it.x?'. '+fm(it.x):'');
+$('nx').innerHTML='<button class="go" id="nb">'+(T.i+1==len?'Показать результат':'Дальше')+'</button>';
+('nb').onclick=function(){T.i++;nextQ()};('nb').focus();
+};
+}
+function li(x){return '<div class="li" style="--c:'+col(x.c)+'"><b>'+fm(x.q)+'</b><span>'+fm(x.a)+'</span><small>'+fm(x.x)+'</small>'+(cfg.draw&&x.m?'<div class="mol" style="grid-column:1/-1">'+drawMol(x.m)+'</div>':'')+'</div>'}
+function result(){
+var n=T.items.length,bad=T.bad.length,pct=Math.round(T.sc/n100),old=S.best[cat],note='';
+if(!T.mist){if(!old||pct>old.pct){S.best[cat]={sc:T.sc,n:n,pct:pct};note=old?'Новый рекорд!':''}save()}
+var v=pct>=90?'Отлично!':pct>=70?'Хорошо, осталось подтянуть мелочи':pct>=50?'Неплохо, но стоит повторить':'Вернись к карточкам и попробуй ещё раз';
+$('app').innerHTML='<div class="res"><small>'+C[cat][0]+(T.mist?', работа над ошибками':'')+'</small><b>'+T.sc+' из '+n+'</b><div>'+pct+'%</div><p>'+v+' '+note+'</p><div class="score"><div class="s1"><b>'+T.sc+'</b>верно</div><div class="s2"><b>'+bad+'</b>неверно</div></div></div>'+(bad?'<p class="sub">Разбор ошибок</p>'+T.bad.map(li).
