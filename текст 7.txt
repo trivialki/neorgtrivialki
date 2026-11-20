@@ -1,9 +1,0 @@
-Айдар Рифович, [20 ноя. 2026 в 19:04]
-join(''):'')+'<div class="btns" style="margin-top:16px">'+(bad?'<button id="rm">Повторить ошибки</button>':'')+'<button class="go" id="ra">Пройти заново</button></div><div class="tools"><button id="tc">К карточкам</button></div>';
-if(bad)$('rm').onclick=function(){startT(sh(T.bad),true)};
-('ra').onclick=quiz;('tc').onclick=function(){mode='cards';go()};
-}
-function list(){$('app').innerHTML=pool().map(li).join('')}
-go();
-}
-/* ===== Данные колод ===== */
